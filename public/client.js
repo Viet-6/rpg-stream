@@ -13,6 +13,45 @@ function setStatus(msg) {
 const wsUrl = `ws://${location.host}`;
 let ws = null;
 
+// ====== Video rendering ======
+let pendingBitmap = null;
+let decoding = false;
+
+function render() {
+  if (pendingBitmap) {
+    ctx.drawImage(pendingBitmap, 0, 0, canvas.width, canvas.height);
+    pendingBitmap.close();
+    pendingBitmap = null;
+  }
+  requestAnimationFrame(render);
+}
+render();
+
+const supportsBitmap = typeof createImageBitmap !== 'undefined';
+
+function showFrame(data) {
+  const blob = new Blob([data], { type: 'image/jpeg' });
+
+  if (supportsBitmap) {
+    if (decoding) return;
+    decoding = true;
+    createImageBitmap(blob).then((bitmap) => {
+      decoding = false;
+      if (pendingBitmap) pendingBitmap.close();
+      pendingBitmap = bitmap;
+    }).catch(() => { decoding = false; });
+  } else {
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+  }
+}
+
+// ====== WebSocket ======
 function connect() {
   setStatus('Connecting...');
   ws = new WebSocket(wsUrl);
@@ -26,14 +65,7 @@ function connect() {
 
   ws.onmessage = (e) => {
     if (e.data instanceof ArrayBuffer) {
-      const blob = new Blob([e.data], { type: 'image/jpeg' });
-      const url = URL.createObjectURL(blob);
-      const img = new Image();
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        URL.revokeObjectURL(url);
-      };
-      img.src = url;
+      showFrame(e.data);
     }
   };
 

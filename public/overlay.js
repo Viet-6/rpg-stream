@@ -1,5 +1,23 @@
 (function() {
   const overlay = document.getElementById('overlay');
+  let controlsHidden = false;
+
+  const toggleBtn = document.createElement('div');
+  toggleBtn.className = 'overlay-toggle-btn';
+  toggleBtn.textContent = 'Hide';
+
+  function setControlsHidden(hidden) {
+    controlsHidden = hidden;
+    overlay.classList.toggle('controls-hidden', controlsHidden);
+    toggleBtn.textContent = controlsHidden ? 'Show' : 'Hide';
+  }
+
+  toggleBtn.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    setControlsHidden(!controlsHidden);
+  });
+
+  overlay.appendChild(toggleBtn);
 
   function sendKey(type, key) {
     const data = JSON.stringify({ type, key });

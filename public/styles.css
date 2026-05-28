@@ -40,6 +40,38 @@ body {
     touch-action: none
 }
 
+.overlay-toggle-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    min-width: 68px;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 18px;
+    background: rgba(0, 0, 0, .55);
+    border: 1px solid rgba(255, 255, 255, .35);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 7
+}
+
+.overlay-toggle-btn:active {
+    background: rgba(0, 0, 0, .75)
+}
+
+#overlay.controls-hidden .dpad,
+#overlay.controls-hidden .actions {
+    display: none
+}
+
 .hidden {
     display: none
 }
