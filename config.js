@@ -44,6 +44,7 @@ if (platform === 'linux') {
     cmd: 'xdotool',
     keydownCmd: (key) => `keydown ${key}`,
     keyupCmd: (key) => `keyup ${key}`,
+    keypressCmd: (key) => `key ${key}`,
     keyMap: {
       ArrowUp: 'Up',
       ArrowDown: 'Down',
@@ -80,6 +81,8 @@ if (platform === 'linux') {
     keydownCmd: (key) =>
       `Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('{${key}}')`,
     keyupCmd: (key) =>
+      `Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('{${key}}')`,
+    keypressCmd: (key) =>
       `Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('{${key}}')`,
     keyMap: {
       ArrowUp: 'UP',

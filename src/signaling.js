@@ -22,11 +22,8 @@ function setupSignaling(wss, inputHandler) {
         return;
       }
 
-      if (msg.type === 'keydown' || msg.type === 'keyup') {
+      if (msg.type === 'keydown' || msg.type === 'keyup' || msg.type === 'press') {
         inputHandler(msg.type, msg.key);
-      } else if (msg.type === 'press') {
-        inputHandler('keydown', msg.key);
-        setTimeout(() => inputHandler('keyup', msg.key), 50);
       }
     });
 

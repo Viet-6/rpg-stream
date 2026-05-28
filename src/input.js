@@ -13,7 +13,7 @@ function createInputHandler(config) {
     if (isXdotool) {
       if (proc && proc.stdin.writable && proc.exitCode === null) return;
       proc = spawn(cmd, ['-']);
-      proc.stderr.on('data', () => { });
+      proc.stderr.on('data', () => {});
       proc.on('error', (err) => {
         console.error('[input] xdotool error:', err.message);
         proc = null;
@@ -27,15 +27,22 @@ function createInputHandler(config) {
 
     if (type === 'keydown' && held[key]) return;
     if (type === 'keyup' && !held[key]) return;
-    held[key] = type === 'keydown';
+    if (type === 'keydown' || type === 'keyup') {
+      held[key] = type === 'keydown';
+    }
 
-    const cmdStr = type === 'keydown' ? keydownCmd(mapped) : keyupCmd(mapped);
+    let cmdStr;
+    if (type === 'press') {
+      cmdStr = config.input.keypressCmd(mapped);
+    } else {
+      cmdStr = type === 'keydown' ? keydownCmd(mapped) : keyupCmd(mapped);
+    }
 
     if (isXdotool) {
       ensureProc();
-      try { proc.stdin.write(cmdStr + '\n'); } catch (e) { }
+      try { proc.stdin.write(cmdStr + '\n'); } catch (e) {}
     } else {
-      execFile(cmd, ['-Command', cmdStr], () => { });
+      execFile(cmd, ['-Command', cmdStr], () => {});
     }
   }
 
