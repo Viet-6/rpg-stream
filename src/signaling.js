@@ -24,6 +24,9 @@ function setupSignaling(wss, inputHandler) {
 
       if (msg.type === 'keydown' || msg.type === 'keyup') {
         inputHandler(msg.type, msg.key);
+      } else if (msg.type === 'press') {
+        inputHandler('keydown', msg.key);
+        setTimeout(() => inputHandler('keyup', msg.key), 50);
       }
     });
 

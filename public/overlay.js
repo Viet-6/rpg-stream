@@ -20,81 +20,53 @@
   overlay.appendChild(toggleBtn);
   const pressed = {};
 
-  function sendKey(type, key) {
+  function send(type, key) {
     const data = JSON.stringify({ type, key });
     if (window.ws && window.ws.readyState === WebSocket.OPEN) {
       window.ws.send(data);
     }
   }
 
-  function sendKeydown(key) { sendKey('keydown', key); }
-  function sendKeyup(key) { sendKey('keyup', key); }
-
-  function makeDpadButton(dir, label, klass) {
+  function makeButton(label, key, klass) {
     const btn = document.createElement('div');
-    btn.className = 'dpad-btn ' + klass;
+    btn.className = klass;
     btn.textContent = label;
-    const key = 'Arrow' + dir;
 
     btn.addEventListener('pointerdown', (e) => {
       e.preventDefault();
       if (pressed[key]) return;
       pressed[key] = true;
-      sendKeydown(key);
+      send('press', key);
     });
     btn.addEventListener('pointerup', (e) => {
       e.preventDefault();
-      if (!pressed[key]) return;
       pressed[key] = false;
-      sendKeyup(key);
     });
     btn.addEventListener('pointerleave', () => {
-      if (!pressed[key]) return;
       pressed[key] = false;
-      sendKeyup(key);
+    });
+    btn.addEventListener('pointercancel', () => {
+      pressed[key] = false;
     });
     return btn;
   }
 
   const dpad = document.createElement('div');
   dpad.className = 'dpad';
-  dpad.appendChild(makeDpadButton('Up', '\u25B2', 'dpad-up'));
-  dpad.appendChild(makeDpadButton('Down', '\u25BC', 'dpad-down'));
-  dpad.appendChild(makeDpadButton('Left', '\u25C0', 'dpad-left'));
-  dpad.appendChild(makeDpadButton('Right', '\u25B6', 'dpad-right'));
+  dpad.appendChild(makeButton('\u25B2', 'ArrowUp', 'dpad-btn dpad-up'));
+  dpad.appendChild(makeButton('\u25BC', 'ArrowDown', 'dpad-btn dpad-down'));
+  dpad.appendChild(makeButton('\u25C0', 'ArrowLeft', 'dpad-btn dpad-left'));
+  dpad.appendChild(makeButton('\u25B6', 'ArrowRight', 'dpad-btn dpad-right'));
   overlay.appendChild(dpad);
 
   const actions = document.createElement('div');
   actions.className = 'actions';
-
-  function makeActionBtn(label, key) {
-    const btn = document.createElement('div');
-    btn.className = 'action-btn';
-    btn.textContent = label;
-
-    btn.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      if (pressed[key]) return;
-      pressed[key] = true;
-      sendKeydown(key);
-    });
-    btn.addEventListener('pointerup', (e) => {
-      e.preventDefault();
-      if (!pressed[key]) return;
-      pressed[key] = false;
-      sendKeyup(key);
-    });
-    btn.addEventListener('pointerleave', () => {
-      if (!pressed[key]) return;
-      pressed[key] = false;
-      sendKeyup(key);
-    });
-    return btn;
+  for (const [label, key] of [
+    ['A', 'a'], ['S', 's'], ['D', 'd'], ['Q', 'q'], ['W', 'w'],
+    ['Z', 'z'], ['X', 'x'],
+    ['SHIFT', 'Shift'], ['\u23CE', 'Enter'], ['ESC', 'Escape'],
+  ]) {
+    actions.appendChild(makeButton(label, key, 'action-btn'));
   }
-
-  actions.appendChild(makeActionBtn('Z', 'z'));
-  actions.appendChild(makeActionBtn('X', 'x'));
-  actions.appendChild(makeActionBtn('\u23CE', 'Enter'));
-  actions.appendChild(makeActionBtn('ESC', 'Escape'));
   overlay.appendChild(actions);
 })();
