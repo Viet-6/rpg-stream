@@ -1,4 +1,4 @@
-(function() {
+(function () {
   const overlay = document.getElementById('overlay');
   let controlsHidden = false;
 
@@ -18,10 +18,10 @@
   });
 
   overlay.appendChild(toggleBtn);
+  const pressed = {};
 
   function sendKey(type, key) {
     const data = JSON.stringify({ type, key });
-    // access ws from global scope in client.js
     if (window.ws && window.ws.readyState === WebSocket.OPEN) {
       window.ws.send(data);
     }
@@ -34,20 +34,34 @@
     const btn = document.createElement('div');
     btn.className = 'dpad-btn ' + klass;
     btn.textContent = label;
-    btn.addEventListener('pointerdown', (e) => { e.preventDefault(); sendKeydown('Arrow' + dir); });
-    btn.addEventListener('pointerup', (e) => { e.preventDefault(); sendKeyup('Arrow' + dir); });
-    btn.addEventListener('pointerleave', (e) => { sendKeyup('Arrow' + dir); });
+    const key = 'Arrow' + dir;
+
+    btn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      if (pressed[key]) return;
+      pressed[key] = true;
+      sendKeydown(key);
+    });
+    btn.addEventListener('pointerup', (e) => {
+      e.preventDefault();
+      if (!pressed[key]) return;
+      pressed[key] = false;
+      sendKeyup(key);
+    });
+    btn.addEventListener('pointerleave', () => {
+      if (!pressed[key]) return;
+      pressed[key] = false;
+      sendKeyup(key);
+    });
     return btn;
   }
 
   const dpad = document.createElement('div');
   dpad.className = 'dpad';
-
   dpad.appendChild(makeDpadButton('Up', '\u25B2', 'dpad-up'));
   dpad.appendChild(makeDpadButton('Down', '\u25BC', 'dpad-down'));
   dpad.appendChild(makeDpadButton('Left', '\u25C0', 'dpad-left'));
   dpad.appendChild(makeDpadButton('Right', '\u25B6', 'dpad-right'));
-
   overlay.appendChild(dpad);
 
   const actions = document.createElement('div');
@@ -57,9 +71,24 @@
     const btn = document.createElement('div');
     btn.className = 'action-btn';
     btn.textContent = label;
-    btn.addEventListener('pointerdown', (e) => { e.preventDefault(); sendKeydown(key); });
-    btn.addEventListener('pointerup', (e) => { e.preventDefault(); sendKeyup(key); });
-    btn.addEventListener('pointerleave', (e) => { sendKeyup(key); });
+
+    btn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      if (pressed[key]) return;
+      pressed[key] = true;
+      sendKeydown(key);
+    });
+    btn.addEventListener('pointerup', (e) => {
+      e.preventDefault();
+      if (!pressed[key]) return;
+      pressed[key] = false;
+      sendKeyup(key);
+    });
+    btn.addEventListener('pointerleave', () => {
+      if (!pressed[key]) return;
+      pressed[key] = false;
+      sendKeyup(key);
+    });
     return btn;
   }
 
@@ -67,6 +96,5 @@
   actions.appendChild(makeActionBtn('X', 'x'));
   actions.appendChild(makeActionBtn('\u23CE', 'Enter'));
   actions.appendChild(makeActionBtn('ESC', 'Escape'));
-
   overlay.appendChild(actions);
 })();

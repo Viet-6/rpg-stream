@@ -17,6 +17,15 @@ const config = {
 
 const v = config.video;
 
+config.capture = {
+  mode: process.env.CAPTURE_MODE || 'fullscreen',
+  windowTitle: process.env.CAPTURE_WINDOW || '',
+  x: parseInt(process.env.CAPTURE_X, 10) || 0,
+  y: parseInt(process.env.CAPTURE_Y, 10) || 0,
+  width: parseInt(process.env.CAPTURE_WIDTH, 10) || v.width,
+  height: parseInt(process.env.CAPTURE_HEIGHT, 10) || v.height,
+};
+
 if (platform === 'linux') {
   config.ffmpeg = {
     cmd: 'ffmpeg',
@@ -33,8 +42,8 @@ if (platform === 'linux') {
   };
   config.input = {
     cmd: 'xdotool',
-    keydown: (key) => ['keydown', key],
-    keyup: (key) => ['keyup', key],
+    keydownCmd: (key) => `keydown ${key}`,
+    keyupCmd: (key) => `keyup ${key}`,
     keyMap: {
       ArrowUp: 'Up',
       ArrowDown: 'Down',
@@ -62,14 +71,10 @@ if (platform === 'linux') {
   };
   config.input = {
     cmd: 'powershell',
-    keydown: (key) => [
-      '-Command',
+    keydownCmd: (key) =>
       `Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('{${key}}')`,
-    ],
-    keyup: (key) => [
-      '-Command',
+    keyupCmd: (key) =>
       `Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('{${key}}')`,
-    ],
     keyMap: {
       ArrowUp: 'UP',
       ArrowDown: 'DOWN',

@@ -107,19 +107,47 @@ You should see:
 
 Set environment variables before running `npm start`:
 
+### Video
+
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `PORT` | `3000` | Server port |
 | `HOST` | `0.0.0.0` | Bind address |
-| `VIDEO_WIDTH` | `800` | Capture width |
-| `VIDEO_HEIGHT` | `600` | Capture height |
+| `VIDEO_WIDTH` | `800` | Output stream width |
+| `VIDEO_HEIGHT` | `600` | Output stream height |
 | `VIDEO_FPS` | `10` | Frames per second |
 | `VIDEO_QUALITY` | `2` | JPEG quality (1=best, 31=worst) |
 | `DISPLAY` | `:0.0` | Linux X display |
 
-Example:
+### Capture Region
+
+By default the full screen is captured and scaled to the stream size. Use these options to capture only a specific area (e.g. a game window):
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CAPTURE_MODE` | `fullscreen` | Capture mode: `fullscreen`, `region`, or `window` |
+| `CAPTURE_X` | `0` | Left offset of capture region (region mode) |
+| `CAPTURE_Y` | `0` | Top offset of capture region (region mode) |
+| `CAPTURE_WIDTH` | `VIDEO_WIDTH` | Width of capture region (region mode) |
+| `CAPTURE_HEIGHT` | `VIDEO_HEIGHT` | Height of capture region (region mode) |
+| `CAPTURE_WINDOW` | — | Window title pattern for auto-detection (window mode, Linux only) |
+
+Examples:
+
 ```bash
-VIDEO_WIDTH=1280 VIDEO_HEIGHT=720 VIDEO_FPS=15 npm start
+# Capture a 544x416 game at the top-left corner
+CAPTURE_MODE=region CAPTURE_WIDTH=544 CAPTURE_HEIGHT=416 npm start
+
+# Auto-detect a window containing "Game" in its title
+CAPTURE_MODE=window CAPTURE_WINDOW="Game" npm start
+
+# Stream at native 544x416 resolution (no scaling)
+VIDEO_WIDTH=544 VIDEO_HEIGHT=416 CAPTURE_MODE=region CAPTURE_WIDTH=544 CAPTURE_HEIGHT=416 npm start
+```
+
+To find your game window title (Linux):
+```bash
+xdotool search --name "" | while read id; do xdotool getwindowname "$id"; done
 ```
 
 ## Troubleshooting
