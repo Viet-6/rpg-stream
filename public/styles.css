@@ -163,6 +163,10 @@ body {
     gap: 20px
 }
 
+.bottom {
+    bottom: 120px;
+}
+
 .action-btn {
     width: 56px;
     height: 56px;

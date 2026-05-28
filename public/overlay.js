@@ -60,13 +60,25 @@
   overlay.appendChild(dpad);
 
   const actions = document.createElement('div');
-  actions.className = 'actions';
+  const actions1 = document.createElement('div');
+  actions1.className = 'actions bottom';
   for (const [label, key] of [
     ['A', 'a'], ['S', 's'], ['D', 'd'], ['Q', 'q'], ['W', 'w'],
     ['Z', 'z'], ['X', 'x'],
     ['SHIFT', 'Shift'], ['\u23CE', 'Enter'], ['ESC', 'Escape'],
   ]) {
-    actions.appendChild(makeButton(label, key, 'action-btn'));
+    actions1.appendChild(makeButton(label, key, 'action-btn'));
   }
+  actions.appendChild(actions1);
+
+  const actions2 = document.createElement('div');
+  actions2.className = 'actions';
+  for (const [label, key] of [
+    ['Z', 'z'], ['X', 'x'],
+    ['SHIFT', 'Shift'], ['\u23CE', 'Enter'], ['ESC', 'Escape'],
+  ]) {
+    actions2.appendChild(makeButton(label, key, 'action-btn'));
+  }
+  actions.appendChild(actions2);
   overlay.appendChild(actions);
 })();
