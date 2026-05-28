@@ -1,0 +1,9 @@
+{
+  "name": "RPG Stream",
+  "short_name": "RPG Stream",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#000000",
+  "theme_color": "#000000"
+}

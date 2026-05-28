@@ -18,12 +18,12 @@ const config = {
 const v = config.video;
 
 config.capture = {
-  mode: process.env.CAPTURE_MODE || 'fullscreen',
+  mode: process.env.CAPTURE_MODE || 'region',
   windowTitle: process.env.CAPTURE_WINDOW || '',
   x: parseInt(process.env.CAPTURE_X, 10) || 0,
   y: parseInt(process.env.CAPTURE_Y, 10) || 0,
-  width: parseInt(process.env.CAPTURE_WIDTH, 10) || v.width,
-  height: parseInt(process.env.CAPTURE_HEIGHT, 10) || v.height,
+  width: parseInt(process.env.CAPTURE_WIDTH, 10) || 640,
+  height: parseInt(process.env.CAPTURE_HEIGHT, 10) || 600,
 };
 
 if (platform === 'linux') {

@@ -102,6 +102,13 @@ You should see:
    - **Windows**: `ipconfig` (look for "IPv4 Address")
 2. On your phone (same WiFi network), open: `http://YOUR_IP:3000`
 3. The touch overlay appears automatically
+4. Tap the **⛶** button in the top-right corner to enter fullscreen (hides browser address bar)
+
+**For the best experience**, add the page to your home screen:
+- **Android (Chrome)**: tap the three-dot menu → "Add to Home screen"
+- **iOS (Safari)**: tap the Share button → "Add to Home Screen"
+
+This opens the stream as a standalone app with no browser chrome.
 
 ## Configuration
 

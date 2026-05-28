@@ -83,3 +83,22 @@ function connect() {
 }
 
 setTimeout(connect, 100);
+
+// ====== Fullscreen ======
+const fsBtn = document.getElementById('fullscreen-btn');
+
+fsBtn.addEventListener('click', () => {
+  const el = document.documentElement;
+  if (el.requestFullscreen) {
+    el.requestFullscreen().catch(() => {});
+  } else if (el.webkitRequestFullscreen) {
+    el.webkitRequestFullscreen();
+  }
+});
+
+document.addEventListener('fullscreenchange', () => {
+  fsBtn.classList.toggle('hidden', !!document.fullscreenElement);
+});
+document.addEventListener('webkitfullscreenchange', () => {
+  fsBtn.classList.toggle('hidden', !!document.webkitFullscreenElement);
+});
