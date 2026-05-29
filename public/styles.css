@@ -163,8 +163,18 @@ body {
     gap: 20px
 }
 
+.top-left {
+    right: unset;
+    left: 30px;
+    top: 30px;
+}
+
 .bottom {
     bottom: 120px;
+}
+
+.bottom-2 {
+    bottom: 200px;
 }
 
 .action-btn {

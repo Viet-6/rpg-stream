@@ -23,7 +23,7 @@ config.capture = {
   x: parseInt(process.env.CAPTURE_X, 10) || 0,
   y: parseInt(process.env.CAPTURE_Y, 10) || 0,
   width: parseInt(process.env.CAPTURE_WIDTH, 10) || 640,
-  height: parseInt(process.env.CAPTURE_HEIGHT, 10) || 600,
+  height: parseInt(process.env.CAPTURE_HEIGHT, 10) || 640,
 };
 
 if (platform === 'linux') {

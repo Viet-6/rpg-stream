@@ -60,25 +60,42 @@
   overlay.appendChild(dpad);
 
   const actions = document.createElement('div');
-  const actions1 = document.createElement('div');
-  actions1.className = 'actions bottom';
-  for (const [label, key] of [
-    ['A', 'a'], ['S', 's'], ['D', 'd'], ['Q', 'q'], ['W', 'w'],
-    ['Z', 'z'], ['X', 'x'],
-    ['SHIFT', 'Shift'], ['\u23CE', 'Enter'], ['ESC', 'Escape'],
-  ]) {
-    actions1.appendChild(makeButton(label, key, 'action-btn'));
-  }
-  actions.appendChild(actions1);
 
-  const actions2 = document.createElement('div');
-  actions2.className = 'actions';
+  const actionGroup1 = document.createElement('div');
+  actionGroup1.className = 'actions top-left';
   for (const [label, key] of [
-    ['Z', 'z'], ['X', 'x'],
-    ['SHIFT', 'Shift'], ['\u23CE', 'Enter'], ['ESC', 'Escape'],
+    ['SHIFT', 'Shift'],
   ]) {
-    actions2.appendChild(makeButton(label, key, 'action-btn'));
+    actionGroup1.appendChild(makeButton(label, key, 'action-btn'));
   }
-  actions.appendChild(actions2);
+  actions.appendChild(actionGroup1);
+
+  const actionGroup2 = document.createElement('div');
+  actionGroup2.className = 'actions bottom';
+  for (const [label, key] of [
+    ['A', 'a'], ['S', 's'],
+  ]) {
+    actionGroup2.appendChild(makeButton(label, key, 'action-btn'));
+  }
+  actions.appendChild(actionGroup2);
+
+  const actionGroup3 = document.createElement('div');
+  actionGroup3.className = 'actions bottom-2';
+  for (const [label, key] of [
+    ['Q', 'q'], ['W', 'w'],
+  ]) {
+    actionGroup3.appendChild(makeButton(label, key, 'action-btn'));
+  }
+  actions.appendChild(actionGroup3);
+
+  const actionGroup4 = document.createElement('div');
+  actionGroup4.className = 'actions';
+  for (const [label, key] of [
+    ['D', 'd'], ['X', 'x'], ['Z', 'z']
+  ]) {
+    actionGroup4.appendChild(makeButton(label, key, 'action-btn'));
+  }
+  actions.appendChild(actionGroup4);
+
   overlay.appendChild(actions);
 })();
