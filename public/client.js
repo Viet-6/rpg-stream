@@ -3,8 +3,6 @@ const canvas = document.getElementById('canvas');
 const overlay = document.getElementById('overlay');
 
 const ctx = canvas.getContext('2d');
-canvas.width = 3840;
-canvas.height = 2160;
 
 function setStatus(msg) {
   statusEl.textContent = msg;
@@ -38,13 +36,17 @@ function showFrame(data) {
     createImageBitmap(blob).then((bitmap) => {
       decoding = false;
       if (pendingBitmap) pendingBitmap.close();
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
       pendingBitmap = bitmap;
     }).catch(() => { decoding = false; });
   } else {
     const url = URL.createObjectURL(blob);
     const img = new Image();
     img.onload = () => {
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
       URL.revokeObjectURL(url);
     };
     img.src = url;

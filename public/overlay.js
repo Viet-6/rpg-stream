@@ -36,17 +36,20 @@
       e.preventDefault();
       if (pressed[key]) return;
       pressed[key] = true;
-      send('press', key);
+      send('keydown', key);
     });
     btn.addEventListener('pointerup', (e) => {
       e.preventDefault();
       pressed[key] = false;
+      send('keyup', key);
     });
     btn.addEventListener('pointerleave', () => {
       pressed[key] = false;
+      send('keyup', key);
     });
     btn.addEventListener('pointercancel', () => {
       pressed[key] = false;
+      send('keyup', key);
     });
     return btn;
   }
