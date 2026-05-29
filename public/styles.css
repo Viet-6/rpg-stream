@@ -36,11 +36,6 @@ body {
 
 #canvas {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: fill;
 }
 
 #status {
@@ -167,6 +162,7 @@ body {
     right: unset;
     left: 30px;
     top: 30px;
+    height: 56px;
 }
 
 .bottom {

@@ -43,10 +43,6 @@
       pressed[key] = false;
       send('keyup', key);
     });
-    btn.addEventListener('pointerleave', () => {
-      pressed[key] = false;
-      send('keyup', key);
-    });
     btn.addEventListener('pointercancel', () => {
       pressed[key] = false;
       send('keyup', key);

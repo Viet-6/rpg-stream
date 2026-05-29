@@ -25,6 +25,27 @@ function render() {
 }
 render();
 
+function fitCanvas() {
+  if (!canvas.width || !canvas.height) return;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const ar = canvas.width / canvas.height;
+  let w, h;
+  if (vw / vh > ar) {
+    h = vh;
+    w = h * ar;
+  } else {
+    w = vw;
+    h = w / ar;
+  }
+  canvas.style.width = `${w}px`;
+  canvas.style.height = `${h}px`;
+  canvas.style.left = `${(vw - w) / 2}px`;
+  canvas.style.top = `${(vh - h) / 2}px`;
+}
+
+window.addEventListener('resize', fitCanvas);
+
 const supportsBitmap = typeof createImageBitmap !== 'undefined';
 
 function showFrame(data) {
@@ -38,6 +59,7 @@ function showFrame(data) {
       if (pendingBitmap) pendingBitmap.close();
       canvas.width = bitmap.width;
       canvas.height = bitmap.height;
+      fitCanvas();
       pendingBitmap = bitmap;
     }).catch(() => { decoding = false; });
   } else {
@@ -46,6 +68,7 @@ function showFrame(data) {
     img.onload = () => {
       canvas.width = img.width;
       canvas.height = img.height;
+      fitCanvas();
       ctx.drawImage(img, 0, 0);
       URL.revokeObjectURL(url);
     };
@@ -100,7 +123,9 @@ fsBtn.addEventListener('click', () => {
 
 document.addEventListener('fullscreenchange', () => {
   fsBtn.classList.toggle('hidden', !!document.fullscreenElement);
+  fitCanvas();
 });
 document.addEventListener('webkitfullscreenchange', () => {
   fsBtn.classList.toggle('hidden', !!document.webkitFullscreenElement);
+  fitCanvas();
 });

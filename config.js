@@ -6,8 +6,8 @@ const config = {
   port: parseInt(process.env.PORT, 10) || 3000,
   host: process.env.HOST || '0.0.0.0',
   video: {
-    width: parseInt(process.env.VIDEO_WIDTH, 10) || 1920,
-    height: parseInt(process.env.VIDEO_HEIGHT, 10) || 1080,
+    width: parseInt(process.env.VIDEO_WIDTH, 10) || 640,
+    height: parseInt(process.env.VIDEO_HEIGHT, 10) || 640,
     fps: parseInt(process.env.VIDEO_FPS, 10) || 60,
     quality: parseInt(process.env.VIDEO_QUALITY, 10) || 1,
   },
